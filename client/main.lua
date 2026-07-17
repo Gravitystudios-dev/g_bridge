@@ -379,7 +379,145 @@ end
 
 function Bridge.TogglePhone(disabled)
     local provider = clientProvider('phone', Config.Phone, { 'lb-phone', 'npwd', 'qs-smartphone-pro', 'yseries' })
-    return provider and provider.setDisabled(disabled == true) or false
+    return provider and provider.setDisabled and provider.setDisabled(disabled == true) or false
+end
+
+local function phoneProvider()
+    return clientProvider('phone', Config.Phone, { 'lb-phone', 'npwd', 'qs-smartphone-pro', 'yseries' })
+end
+
+local function phoneAction(method, ...)
+    local provider = phoneProvider()
+    return provider and provider[method] and provider[method](...) or false
+end
+
+function Bridge.OpenPhone()
+    return phoneAction('open')
+end
+
+function Bridge.ClosePhone()
+    return phoneAction('close')
+end
+
+function Bridge.IsPhoneOpen()
+    local provider = phoneProvider()
+    return provider and provider.isOpen and provider.isOpen() or false
+end
+
+function Bridge.IsPhoneDisabled()
+    local provider = phoneProvider()
+    return provider and provider.isDisabled and provider.isDisabled() or false
+end
+
+function Bridge.GetLocalPhoneNumber()
+    local provider = phoneProvider()
+    return provider and provider.getPhoneNumber and provider.getPhoneNumber() or nil
+end
+
+function Bridge.ClosePhoneApp()
+    return phoneAction('closeApp')
+end
+
+function Bridge.CreatePhoneCall(number, options)
+    if type(number) ~= 'string' or number == '' then return false end
+    return phoneAction('createCall', number, options)
+end
+
+function Bridge.IsInPhoneCall()
+    local provider = phoneProvider()
+    if provider and provider.isInCall then return provider.isInCall() end
+    return false, nil
+end
+
+function Bridge.CancelPhoneCall()
+    return phoneAction('cancelCall')
+end
+
+function Bridge.GetPhoneCallStatus(number)
+    if type(number) ~= 'string' or number == '' then return nil end
+    local provider = phoneProvider()
+    return provider and provider.getCallStatus and provider.getCallStatus(number) or nil
+end
+
+function Bridge.GetPhoneCallConfig()
+    local provider = phoneProvider()
+    return provider and provider.getCallConfig and provider.getCallConfig() or nil
+end
+
+function Bridge.GetPhoneJobStage()
+    local provider = phoneProvider()
+    return provider and provider.getJobStage and provider.getJobStage() or nil
+end
+
+function Bridge.GetPhoneGroupId()
+    local provider = phoneProvider()
+    return provider and provider.getGroupId and provider.getGroupId() or nil
+end
+
+function Bridge.IsPhoneGroupLeader()
+    local provider = phoneProvider()
+    return provider and provider.isGroupLeader and provider.isGroupLeader() or false
+end
+
+function Bridge.SendCompanyMessage(company, message, showLocation, anonymous)
+    if type(company) ~= 'string' or company == '' or type(message) ~= 'string' or message == '' then return false end
+    return phoneAction('sendCompanyMessage', company, message, showLocation, anonymous == true)
+end
+
+function Bridge.IsAirplaneModeEnabled()
+    local provider = phoneProvider()
+    return provider and provider.isAirplaneModeEnabled and provider.isAirplaneModeEnabled() or false
+end
+
+function Bridge.IsStreamerModeEnabled()
+    local provider = phoneProvider()
+    return provider and provider.isStreamerModeEnabled and provider.isStreamerModeEnabled() or false
+end
+
+function Bridge.SetStreamerMode(enabled, updateUi)
+    return phoneAction('setStreamerMode', enabled == true, updateUi ~= false)
+end
+
+function Bridge.SetPhoneFlashlight(enabled)
+    return phoneAction('setFlashlight', enabled == true)
+end
+
+function Bridge.GetPhoneFlashlightState()
+    local provider = phoneProvider()
+    return provider and provider.getFlashlightState and provider.getFlashlightState() or false
+end
+
+function Bridge.SendPhoneAppMessage(appId, data)
+    if type(appId) ~= 'string' or appId == '' then return false end
+    return phoneAction('sendAppMessage', appId, data or {})
+end
+
+function Bridge.SetPhoneLandscape(enabled)
+    return phoneAction('setLandscape', enabled)
+end
+
+function Bridge.IsPhoneAppInstalled(appId)
+    if type(appId) ~= 'string' or appId == '' then return false end
+    local provider = phoneProvider()
+    return provider and provider.isAppInstalled and provider.isAppInstalled(appId) or false
+end
+
+function Bridge.GetCurrentPhoneApp(appId)
+    local provider = phoneProvider()
+    return provider and provider.getCurrentApp and provider.getCurrentApp(appId) or nil
+end
+
+function Bridge.SetPhoneNuiFocusKeepInput(focus)
+    return phoneAction('setNuiFocusKeepInput', focus == true)
+end
+
+function Bridge.IsPhoneInCamera()
+    local provider = phoneProvider()
+    return provider and provider.isInCamera and provider.isInCamera() or false
+end
+
+function Bridge.SetPhoneSOS(enabled)
+    return phoneAction('setSOS', enabled == true)
 end
 
 function Bridge.OpenBossMenu(job)
@@ -493,7 +631,36 @@ Gravity.RegisterModule('Inventory', {
 Gravity.RegisterModule('Fuel', { Get = Bridge.GetFuel, Set = Bridge.SetFuel })
 Gravity.RegisterModule('VehicleKeys', { Give = Bridge.GiveVehicleKeys, Remove = Bridge.RemoveVehicleKeys })
 Gravity.RegisterModule('Appearance', { Open = Bridge.OpenAppearance, Get = Bridge.GetAppearance, Set = Bridge.SetAppearance, SetClothing = Bridge.SetClothing })
-Gravity.RegisterModule('Phone', { SetDisabled = Bridge.TogglePhone })
+Gravity.RegisterModule('Phone', {
+    SetDisabled = Bridge.TogglePhone,
+    Open = Bridge.OpenPhone,
+    Close = Bridge.ClosePhone,
+    IsOpen = Bridge.IsPhoneOpen,
+    IsDisabled = Bridge.IsPhoneDisabled,
+    GetNumber = Bridge.GetLocalPhoneNumber,
+    CloseApp = Bridge.ClosePhoneApp,
+    CreateCall = Bridge.CreatePhoneCall,
+    IsInCall = Bridge.IsInPhoneCall,
+    CancelCall = Bridge.CancelPhoneCall,
+    GetCallStatus = Bridge.GetPhoneCallStatus,
+    GetCallConfig = Bridge.GetPhoneCallConfig,
+    GetJobStage = Bridge.GetPhoneJobStage,
+    GetGroupId = Bridge.GetPhoneGroupId,
+    IsGroupLeader = Bridge.IsPhoneGroupLeader,
+    SendCompanyMessage = Bridge.SendCompanyMessage,
+    IsAirplaneModeEnabled = Bridge.IsAirplaneModeEnabled,
+    IsStreamerModeEnabled = Bridge.IsStreamerModeEnabled,
+    SetStreamerMode = Bridge.SetStreamerMode,
+    SetFlashlight = Bridge.SetPhoneFlashlight,
+    GetFlashlightState = Bridge.GetPhoneFlashlightState,
+    SendAppMessage = Bridge.SendPhoneAppMessage,
+    SetLandscape = Bridge.SetPhoneLandscape,
+    IsAppInstalled = Bridge.IsPhoneAppInstalled,
+    GetCurrentApp = Bridge.GetCurrentPhoneApp,
+    SetNuiFocusKeepInput = Bridge.SetPhoneNuiFocusKeepInput,
+    IsInCamera = Bridge.IsPhoneInCamera,
+    SetSOS = Bridge.SetPhoneSOS,
+})
 Gravity.RegisterModule('BossMenu', { Open = Bridge.OpenBossMenu })
 Gravity.RegisterModule('Dispatch', { SendAlert = Bridge.SendDispatch })
 Gravity.RegisterModule('Utils',
@@ -575,6 +742,33 @@ exports('GetAppearance', Bridge.GetAppearance)
 exports('SetAppearance', Bridge.SetAppearance)
 exports('SetClothing', Bridge.SetClothing)
 exports('TogglePhone', Bridge.TogglePhone)
+exports('OpenPhone', Bridge.OpenPhone)
+exports('ClosePhone', Bridge.ClosePhone)
+exports('IsPhoneOpen', Bridge.IsPhoneOpen)
+exports('IsPhoneDisabled', Bridge.IsPhoneDisabled)
+exports('GetLocalPhoneNumber', Bridge.GetLocalPhoneNumber)
+exports('ClosePhoneApp', Bridge.ClosePhoneApp)
+exports('CreatePhoneCall', Bridge.CreatePhoneCall)
+exports('IsInPhoneCall', Bridge.IsInPhoneCall)
+exports('CancelPhoneCall', Bridge.CancelPhoneCall)
+exports('GetPhoneCallStatus', Bridge.GetPhoneCallStatus)
+exports('GetPhoneCallConfig', Bridge.GetPhoneCallConfig)
+exports('GetPhoneJobStage', Bridge.GetPhoneJobStage)
+exports('GetPhoneGroupId', Bridge.GetPhoneGroupId)
+exports('IsPhoneGroupLeader', Bridge.IsPhoneGroupLeader)
+exports('SendCompanyMessage', Bridge.SendCompanyMessage)
+exports('IsAirplaneModeEnabled', Bridge.IsAirplaneModeEnabled)
+exports('IsStreamerModeEnabled', Bridge.IsStreamerModeEnabled)
+exports('SetStreamerMode', Bridge.SetStreamerMode)
+exports('SetPhoneFlashlight', Bridge.SetPhoneFlashlight)
+exports('GetPhoneFlashlightState', Bridge.GetPhoneFlashlightState)
+exports('SendPhoneAppMessage', Bridge.SendPhoneAppMessage)
+exports('SetPhoneLandscape', Bridge.SetPhoneLandscape)
+exports('IsPhoneAppInstalled', Bridge.IsPhoneAppInstalled)
+exports('GetCurrentPhoneApp', Bridge.GetCurrentPhoneApp)
+exports('SetPhoneNuiFocusKeepInput', Bridge.SetPhoneNuiFocusKeepInput)
+exports('IsPhoneInCamera', Bridge.IsPhoneInCamera)
+exports('SetPhoneSOS', Bridge.SetPhoneSOS)
 exports('OpenBossMenu', Bridge.OpenBossMenu)
 exports('SendDispatch', Bridge.SendDispatch)
 exports('GetNetIdFromEntity', Bridge.GetNetIdFromEntity)

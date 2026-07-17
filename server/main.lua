@@ -579,7 +579,61 @@ Gravity.RegisterModule('VehicleKeys', {
     Remove = Bridge.RemoveVehicleKeys,
 })
 
-Gravity.RegisterModule('Phone', { SetDisabled = Bridge.SetPhoneDisabled })
+Gravity.RegisterModule('Phone', {
+    SetDisabled = Bridge.SetPhoneDisabled,
+    IsDisabled = Bridge.IsPhoneDisabled,
+    GetSourceByNumber = Bridge.GetPhoneSourceByNumber,
+    GetSourceByImei = Bridge.GetPhoneSourceByImei,
+    GetSourceByIdentifier = Bridge.GetPhoneSourceByIdentifier,
+    GetNumber = Bridge.GetPhoneNumber,
+    GetNumberByImei = Bridge.GetPhoneNumberByImei,
+    GetNumberByIdentifier = Bridge.GetPhoneNumberByIdentifier,
+    GetImei = Bridge.GetPhoneImei,
+    GetImeiByIdentifier = Bridge.GetPhoneImeiByIdentifier,
+    RecoverSim = Bridge.RecoverPhoneSim,
+    ChangeNumber = Bridge.ChangePhoneNumber,
+    GenerateNumber = Bridge.GeneratePhoneNumber,
+    CreateSim = Bridge.CreatePhoneSim,
+    CreateCall = Bridge.CreatePhoneCall,
+    EndCall = Bridge.EndPhoneCall,
+    IsInCall = Bridge.IsPlayerInPhoneCall,
+    CanReceiveCalls = Bridge.CanReceivePhoneCalls,
+    GetCallData = Bridge.GetPhoneCallData,
+    RemoveFromCall = Bridge.RemovePlayerFromPhoneCall,
+    SendMessage = Bridge.SendPhoneMessage,
+    SendMessageAdvanced = Bridge.SendPhoneMessageAdvanced,
+    SendMessageFromApp = Bridge.SendPhoneMessageFromApp,
+    GetMetadata = Bridge.GetPhoneMetadata,
+    HasEmailAccount = Bridge.HasPhoneEmailAccount,
+    SetJobDuty = Bridge.SetPhoneJobDuty,
+    RemoveJobDuty = Bridge.RemovePhoneJobDuty,
+    IsJobDuty = Bridge.IsPhoneJobDuty,
+    SendNotification = Bridge.SendPhoneNotification,
+    SendMail = Bridge.SendPhoneMail,
+    DeleteMail = Bridge.DeletePhoneMail,
+    CellBroadcast = Bridge.SendPhoneCellBroadcast,
+    AddYPayTransaction = Bridge.AddPhoneYPayTransaction,
+    SendDarkChatMessage = Bridge.SendDarkChatMessage,
+    GetContacts = Bridge.GetPhoneContacts,
+    BlockContact = Bridge.BlockPhoneContact,
+    GetBlockedNumbers = Bridge.GetBlockedPhoneNumbers,
+    AddContact = Bridge.AddPhoneContact,
+    AddRecentCall = Bridge.AddRecentPhoneCall,
+    GetGroupLeader = Bridge.GetPhoneGroupLeader,
+    IsGroupLeader = Bridge.IsPhoneGroupLeader,
+    GetGroupMembers = Bridge.GetPhoneGroupMembers,
+    FindGroupByMember = Bridge.FindPhoneGroupByMember,
+    GetJobStatus = Bridge.GetPhoneJobStatus,
+    SetJobStatus = Bridge.SetPhoneJobStatus,
+    GetGroupMembersCount = Bridge.GetPhoneGroupMembersCount,
+    CreateGroupBlip = Bridge.CreatePhoneGroupBlip,
+    RemoveGroupBlip = Bridge.RemovePhoneGroupBlip,
+    SendGroupEvent = Bridge.SendPhoneGroupEvent,
+    SetGroupData = Bridge.SetPhoneGroupData,
+    GetGroupData = Bridge.GetPhoneGroupData,
+    DestroyGroupData = Bridge.DestroyPhoneGroupData,
+    NotifyGroup = Bridge.NotifyPhoneGroup,
+})
 Gravity.RegisterModule('Dispatch', { SendAlert = Bridge.SendDispatch })
 Gravity.RegisterModule('Society', {
     GetBalance = Bridge.GetSocietyBalance,
@@ -641,6 +695,58 @@ exports('HasVehicleKeys', Bridge.HasVehicleKeys)
 exports('GiveVehicleKeys', Bridge.GiveVehicleKeys)
 exports('RemoveVehicleKeys', Bridge.RemoveVehicleKeys)
 exports('SetPhoneDisabled', Bridge.SetPhoneDisabled)
+exports('IsPhoneDisabled', Bridge.IsPhoneDisabled)
+exports('GetPhoneSourceByNumber', Bridge.GetPhoneSourceByNumber)
+exports('GetPhoneSourceByImei', Bridge.GetPhoneSourceByImei)
+exports('GetPhoneSourceByIdentifier', Bridge.GetPhoneSourceByIdentifier)
+exports('GetPhoneNumber', Bridge.GetPhoneNumber)
+exports('GetPhoneNumberByImei', Bridge.GetPhoneNumberByImei)
+exports('GetPhoneNumberByIdentifier', Bridge.GetPhoneNumberByIdentifier)
+exports('GetPhoneImei', Bridge.GetPhoneImei)
+exports('GetPhoneImeiByIdentifier', Bridge.GetPhoneImeiByIdentifier)
+exports('RecoverPhoneSim', Bridge.RecoverPhoneSim)
+exports('ChangePhoneNumber', Bridge.ChangePhoneNumber)
+exports('GeneratePhoneNumber', Bridge.GeneratePhoneNumber)
+exports('CreatePhoneSim', Bridge.CreatePhoneSim)
+exports('CreatePhoneCall', Bridge.CreatePhoneCall)
+exports('EndPhoneCall', Bridge.EndPhoneCall)
+exports('IsPlayerInPhoneCall', Bridge.IsPlayerInPhoneCall)
+exports('CanReceivePhoneCalls', Bridge.CanReceivePhoneCalls)
+exports('GetPhoneCallData', Bridge.GetPhoneCallData)
+exports('RemovePlayerFromPhoneCall', Bridge.RemovePlayerFromPhoneCall)
+exports('SendPhoneMessage', Bridge.SendPhoneMessage)
+exports('SendPhoneMessageAdvanced', Bridge.SendPhoneMessageAdvanced)
+exports('SendPhoneMessageFromApp', Bridge.SendPhoneMessageFromApp)
+exports('GetPhoneMetadata', Bridge.GetPhoneMetadata)
+exports('HasPhoneEmailAccount', Bridge.HasPhoneEmailAccount)
+exports('SetPhoneJobDuty', Bridge.SetPhoneJobDuty)
+exports('RemovePhoneJobDuty', Bridge.RemovePhoneJobDuty)
+exports('IsPhoneJobDuty', Bridge.IsPhoneJobDuty)
+exports('SendPhoneNotification', Bridge.SendPhoneNotification)
+exports('SendPhoneMail', Bridge.SendPhoneMail)
+exports('DeletePhoneMail', Bridge.DeletePhoneMail)
+exports('SendPhoneCellBroadcast', Bridge.SendPhoneCellBroadcast)
+exports('AddPhoneYPayTransaction', Bridge.AddPhoneYPayTransaction)
+exports('SendDarkChatMessage', Bridge.SendDarkChatMessage)
+exports('GetPhoneContacts', Bridge.GetPhoneContacts)
+exports('BlockPhoneContact', Bridge.BlockPhoneContact)
+exports('GetBlockedPhoneNumbers', Bridge.GetBlockedPhoneNumbers)
+exports('AddPhoneContact', Bridge.AddPhoneContact)
+exports('AddRecentPhoneCall', Bridge.AddRecentPhoneCall)
+exports('GetPhoneGroupLeader', Bridge.GetPhoneGroupLeader)
+exports('IsPhoneGroupLeader', Bridge.IsPhoneGroupLeader)
+exports('GetPhoneGroupMembers', Bridge.GetPhoneGroupMembers)
+exports('FindPhoneGroupByMember', Bridge.FindPhoneGroupByMember)
+exports('GetPhoneJobStatus', Bridge.GetPhoneJobStatus)
+exports('SetPhoneJobStatus', Bridge.SetPhoneJobStatus)
+exports('GetPhoneGroupMembersCount', Bridge.GetPhoneGroupMembersCount)
+exports('CreatePhoneGroupBlip', Bridge.CreatePhoneGroupBlip)
+exports('RemovePhoneGroupBlip', Bridge.RemovePhoneGroupBlip)
+exports('SendPhoneGroupEvent', Bridge.SendPhoneGroupEvent)
+exports('SetPhoneGroupData', Bridge.SetPhoneGroupData)
+exports('GetPhoneGroupData', Bridge.GetPhoneGroupData)
+exports('DestroyPhoneGroupData', Bridge.DestroyPhoneGroupData)
+exports('NotifyPhoneGroup', Bridge.NotifyPhoneGroup)
 exports('SendDispatch', Bridge.SendDispatch)
 exports('GetSocietyBalance', Bridge.GetSocietyBalance)
 exports('AddSocietyMoney', Bridge.AddSocietyMoney)

@@ -202,7 +202,9 @@ When `Config.Inventory` is `auto` and no supported inventory resource is running
 
 Vehicle/appearance/phone exports: `GetFuel(vehicle)`, `SetFuel(vehicle, amount)`, `GiveVehicleKeys(vehicleOrPlate)`, `RemoveVehicleKeys(vehicleOrPlate)`, `OpenAppearance(data)`, `GetAppearance()`, `SetAppearance(data)`, `SetClothing(data)`, `TogglePhone(disabled)` and `OpenBossMenu(job)`.
 
-Phone providers are client-side because they control the local phone UI. Server scripts can request the same operation for a specific player with `SetPhoneDisabled(source, disabled)`; the bridge forwards it to the configured client provider.
+Phone providers expose optional client capabilities such as `OpenPhone()`, `ClosePhone()`, `IsPhoneOpen()`, `GetLocalPhoneNumber()`, `CreatePhoneCall(number, options)`, `IsInPhoneCall()`, `CancelPhoneCall()`, `SendCompanyMessage(company, message, showLocation, anonymous)`, `SendPhoneAppMessage(appId, data)`, `IsPhoneInCamera()`, `SetPhoneSOS(enabled)` and phone flashlight/landscape helpers. Unsupported capabilities return `false` or `nil` without affecting other phone providers.
+
+The supported phone adapters are `lb-phone`, `npwd`, `qs-smartphone-pro` and `yseries`. The adapters follow each resource's documented exports: [LB Phone client/server exports](https://docs.lbscripts.com/phone/exports/), [NPWD client exports](https://projecterror.dev/docs/npwd/api/client-exports/) and [NPWD server exports](https://projecterror.dev/docs/npwd/api/server-exports/), and [Quasar Smartphone PRO exports](https://docs.quasar-store.com/scripts/smartphone-pro/commands-and-exports). Provider-specific functions that do not have a safe common signature remain optional and return `false`/`nil` when unavailable.
 
 Vehicle key providers may require an entity, while others accept a plate. The bridge handles both forms where the provider supports them.
 
@@ -276,7 +278,9 @@ Bridge:SendDispatch(source, {
 })
 ```
 
-Exports: `GetSocietyBalance(source, job)`, `AddSocietyMoney(source, job, amount)`, `RemoveSocietyMoney(source, job, amount)`, `SetDoorState(doorId, locked)`, `GetDoor(doorId)`, `HasVehicleKeys(source, vehicle)`, `GiveVehicleKeys(source, vehicle, skipNotification)`, `RemoveVehicleKeys(source, vehicle, skipNotification)`, `SetPhoneDisabled(source, disabled)` and `SendDispatch(source, data)`.
+Exports: `GetSocietyBalance(source, job)`, `AddSocietyMoney(source, job, amount)`, `RemoveSocietyMoney(source, job, amount)`, `SetDoorState(doorId, locked)`, `GetDoor(doorId)`, `HasVehicleKeys(source, vehicle)`, `GiveVehicleKeys(source, vehicle, skipNotification)`, `RemoveVehicleKeys(source, vehicle, skipNotification)`, `SetPhoneDisabled(source, disabled)`, `GetPhoneNumber(source)`, `GetPhoneSourceByNumber(number)`, `CreatePhoneCall(targetNumber, targetSource, callerNumber, callerSource, anonymous)`, `EndPhoneCall(callId)`, `SendPhoneMessage(from, to, message, attachments)`, `SendPhoneMessageFromApp(source, phoneNumber, message, appName)`, `GetPhoneMetadata(source)`, `HasPhoneEmailAccount(source)`, `SetPhoneJobDuty(source)`, `RemovePhoneJobDuty(source)`, `IsPhoneJobDuty(source)`, `SendPhoneNotification(notification, targetType, target)`, `SendPhoneMail(data, receiverType, receiver)` and `SendDispatch(source, data)`.
+
+YSeries also exposes optional server capabilities for SIM cards, phone identification, groups, cell broadcasts, YPay and Dark Chat. These are available through the corresponding `Phone` module methods and return `false` or `nil` when another phone provider is active.
 
 Dispatch data accepts `title`, `code`, `priority`, `job`, `coords`, `time`, `notify` and `blip`. The server validates the title/code, clamps timers to 1-60 seconds, fills coordinates from `source` when possible and rate-limits repeated client-originated alerts.
 
