@@ -8,7 +8,7 @@ Config.VersionCheck = {
 }
 
 -- Available locales are defined in locales/.
-Config.Locale = 'it'
+Config.Locale = 'en'
 
 -- Notification resource:
 Config.Notification = 'auto' -- [
