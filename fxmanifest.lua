@@ -45,6 +45,7 @@ server_scripts {
     'modules/server/vehiclekeys/*.lua',
     'modules/server/dispatch/*.lua',
     'modules/server/society/*.lua',
+    'modules/server/phone/*.lua',
     'modules/server/webhooks.lua',
     'server/main.lua'
 }

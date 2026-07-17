@@ -579,6 +579,7 @@ Gravity.RegisterModule('VehicleKeys', {
     Remove = Bridge.RemoveVehicleKeys,
 })
 
+Gravity.RegisterModule('Phone', { SetDisabled = Bridge.SetPhoneDisabled })
 Gravity.RegisterModule('Dispatch', { SendAlert = Bridge.SendDispatch })
 Gravity.RegisterModule('Society', {
     GetBalance = Bridge.GetSocietyBalance,
@@ -639,6 +640,7 @@ exports('GetDoor', Bridge.GetDoor)
 exports('HasVehicleKeys', Bridge.HasVehicleKeys)
 exports('GiveVehicleKeys', Bridge.GiveVehicleKeys)
 exports('RemoveVehicleKeys', Bridge.RemoveVehicleKeys)
+exports('SetPhoneDisabled', Bridge.SetPhoneDisabled)
 exports('SendDispatch', Bridge.SendDispatch)
 exports('GetSocietyBalance', Bridge.GetSocietyBalance)
 exports('AddSocietyMoney', Bridge.AddSocietyMoney)

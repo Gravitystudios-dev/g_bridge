@@ -146,12 +146,12 @@ function Bridge.CloseMenu()
 end
 
 function Bridge.OpenInventory(inventoryType, data)
-    local provider = clientProvider('inventory', Config.Inventory, { 'ox_inventory', 'one_inventory', 'origen_inventory', 'codem-inventory', 'core_inventory', 'qs-inventory', 'ps-inventory', 'qb-inventory' })
+    local provider = clientProvider('inventory', Config.Inventory, { 'ox_inventory', 'one_inventory', 'origen_inventory', 'codem-inventory', 'core_inventory', 'qs-inventory', 'ps-inventory', 'qb-inventory', 'framework' })
     return provider and provider.open(inventoryType, data) or false
 end
 
 local function clientInventoryProvider()
-    return clientProvider('inventory', Config.Inventory, { 'ox_inventory', 'one_inventory', 'origen_inventory', 'codem-inventory', 'core_inventory', 'qs-inventory', 'ps-inventory', 'qb-inventory' })
+    return clientProvider('inventory', Config.Inventory, { 'ox_inventory', 'one_inventory', 'origen_inventory', 'codem-inventory', 'core_inventory', 'qs-inventory', 'ps-inventory', 'qb-inventory', 'framework' })
 end
 
 function Bridge.GetItemCount(item, metadata)
@@ -503,6 +503,10 @@ Gravity.RegisterModule('Marker', { Draw = Bridge.DrawMarkerLabel })
 
 RegisterNetEvent('gravity_bridge:client:notify', function(message, notifyType, duration, options)
     Bridge.Notify(message, notifyType, duration, options)
+end)
+
+RegisterNetEvent('gravity_bridge:client:phone', function(disabled)
+    Bridge.TogglePhone(disabled == true)
 end)
 
 local function notifyJobUpdated(job, previousJob)

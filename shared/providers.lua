@@ -23,6 +23,12 @@ function Gravity.GetClientProvider(category, configured, order)
         for _, candidate in ipairs(order) do
             if Gravity.ResourceStarted(candidate) then resource = candidate break end
         end
+        if resource == 'auto' and Gravity.ClientProviders[category] and Gravity.ClientProviders[category].framework then
+            resource = 'framework'
+        end
+    end
+    if resource == 'framework' then
+        return Gravity.ClientProviders[category] and Gravity.ClientProviders[category].framework, resource
     end
     if not resource or resource == 'auto' or resource == 'none' or not Gravity.ResourceStarted(resource) then return nil end
     return Gravity.ClientProviders[category] and Gravity.ClientProviders[category][resource], resource

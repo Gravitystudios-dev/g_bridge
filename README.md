@@ -198,7 +198,11 @@ local appearance = Bridge:GetAppearance()
 
 Inventory exports: `OpenInventory(type, data)`, `GetItemCount(item, metadata)`, `GetItemData(item)`, `GetInventoryItems()`, `GetCurrentWeapon()` and `Disarm(state)`.
 
-Vehicle/appearance exports: `GetFuel(vehicle)`, `SetFuel(vehicle, amount)`, `GiveVehicleKeys(vehicleOrPlate)`, `RemoveVehicleKeys(vehicleOrPlate)`, `OpenAppearance(data)`, `GetAppearance()`, `SetAppearance(data)`, `SetClothing(data)`, `TogglePhone(disabled)` and `OpenBossMenu(job)`.
+When `Config.Inventory` is `auto` and no supported inventory resource is running, the client falls back to framework player data for item reads. That fallback cannot open an inventory UI, so `OpenInventory` returns `false` until a dedicated inventory provider is selected.
+
+Vehicle/appearance/phone exports: `GetFuel(vehicle)`, `SetFuel(vehicle, amount)`, `GiveVehicleKeys(vehicleOrPlate)`, `RemoveVehicleKeys(vehicleOrPlate)`, `OpenAppearance(data)`, `GetAppearance()`, `SetAppearance(data)`, `SetClothing(data)`, `TogglePhone(disabled)` and `OpenBossMenu(job)`.
+
+Phone providers are client-side because they control the local phone UI. Server scripts can request the same operation for a specific player with `SetPhoneDisabled(source, disabled)`; the bridge forwards it to the configured client provider.
 
 Vehicle key providers may require an entity, while others accept a plate. The bridge handles both forms where the provider supports them.
 
@@ -272,7 +276,7 @@ Bridge:SendDispatch(source, {
 })
 ```
 
-Exports: `GetSocietyBalance(source, job)`, `AddSocietyMoney(source, job, amount)`, `RemoveSocietyMoney(source, job, amount)`, `SetDoorState(doorId, locked)`, `GetDoor(doorId)`, `HasVehicleKeys(source, vehicle)`, `GiveVehicleKeys(source, vehicle, skipNotification)`, `RemoveVehicleKeys(source, vehicle, skipNotification)` and `SendDispatch(source, data)`.
+Exports: `GetSocietyBalance(source, job)`, `AddSocietyMoney(source, job, amount)`, `RemoveSocietyMoney(source, job, amount)`, `SetDoorState(doorId, locked)`, `GetDoor(doorId)`, `HasVehicleKeys(source, vehicle)`, `GiveVehicleKeys(source, vehicle, skipNotification)`, `RemoveVehicleKeys(source, vehicle, skipNotification)`, `SetPhoneDisabled(source, disabled)` and `SendDispatch(source, data)`.
 
 Dispatch data accepts `title`, `code`, `priority`, `job`, `coords`, `time`, `notify` and `blip`. The server validates the title/code, clamps timers to 1-60 seconds, fills coordinates from `source` when possible and rate-limits repeated client-originated alerts.
 
@@ -301,7 +305,7 @@ Named modules are available with `exports.gravity_bridge:GetModule(name)`. They 
 | Side | Modules |
 | --- | --- |
 | Client | `Framework`, `Notify`, `Progress`, `TextUI`, `Input`, `Menu`, `Target`, `Inventory`, `Fuel`, `VehicleKeys`, `Appearance`, `Phone`, `BossMenu`, `Dispatch`, `Utils`, `Marker` |
-| Server | `Framework`, `Inventory`, `Money`, `Banking`, `Doorlock`, `VehicleKeys`, `Dispatch`, `Society`, `Notify`, `Webhooks` |
+| Server | `Framework`, `Inventory`, `Money`, `Banking`, `Doorlock`, `VehicleKeys`, `Phone`, `Dispatch`, `Society`, `Notify`, `Webhooks` |
 
 ```lua
 local Inventory = exports.gravity_bridge:GetModule('Inventory')
@@ -315,6 +319,7 @@ The module table is also available through the `GetModule` export on the matchin
 | Event | Side | Payload |
 | --- | --- | --- |
 | `gravity_bridge:client:notify` | Client | `message, notifyType, duration, options` |
+| `gravity_bridge:client:phone` | Client | `disabled` |
 | `gravity_bridge:client:jobUpdated` | Client | `job, previousJob` (normalized client job tables) |
 | `gravity_bridge:server:jobUpdated` | Server | `playerId, job, previousJob` |
 | `gravity_bridge:server:dispatch` | Server | Dispatch data sent by a client |
